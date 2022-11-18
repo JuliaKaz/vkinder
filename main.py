@@ -10,8 +10,8 @@ import json
 import datetime
 from vk_api.exceptions import ApiError
 
-group_token = "vk1.a.LmONnfW7AyI-jaEhKzj2cADZJLTwKCGZXvFVSrdDcjy7ylakSdA5UNN08nJYKxpVStFgwoj2nwRLgwMjx6e4DjKlqChCnU8yuirNgjHDX9LRzi80s7-9t2opnHU5jjqkrQdQDpVt--nYlnM183mhkkLQ_ulWw3HEQD1K2-w79mTURSnunZiMfcdSvDRPxCfHyEbvUJe3v46YyNz__N6TxA"
-user_token = "vk1.a.mdDPbe_Y6aaHugMMemFZf7dbKcRzeRtJt1uw9-Mj7_dpU4uDfQ5bPpcg4GkiiWVoV2i7_uObo2B2jZV2p3W80MQoIWDItjz0yO0_PbJPSI3M0PBsiyfl86j6cRZ8UurQM-26CtmZLjbnNrKNu4-F67lzKApK6CPavHOIRRHlxWY-LUjKfh9be_ZSXaIjhuYnNDUyTrutnPw3G2845roVxQ&expires_in=0"
+group_token = ""
+user_token = ""
 v = "5.131"
 
 # Для работы с вк_апи

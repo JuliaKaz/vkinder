@@ -97,3 +97,4 @@ def json_create(lst):
     json.dump(res_list, write_file, ensure_ascii=False)
 
   print(f'Информация о загруженных файлах успешно записана в json файл.')
+  

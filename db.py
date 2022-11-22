@@ -190,3 +190,4 @@ def add_to_black_list(event_id, vk_id, first_name, second_name, city, link,
 
 if __name__ == '__main__':
     Base.metadata.create_all(engine)
+    

@@ -15,6 +15,22 @@ longpoll = VkLongPoll(vk)
 session = Session()
 connection = engine.connect()
 
+
+#Собирает инфо о пользователе для поиска пары
+# def search_info(user_id):
+#   all_info = []
+#   vk_ = vk_api.VkApi(token=user_token)
+#   response = vk_.method(
+#     'users_get', {
+#     'user_ids': user_id,
+#     'fields': 'city, sex, bdate'
+#   })
+#   for element in response['items']:
+#     info = [element[city], element[sex], element[bdate]]
+#     all_info.append(info)
+#   return all_info
+
+
 # Ищет людей
 def search_users(sex, age_at, age_to, city):
   all_persons = []

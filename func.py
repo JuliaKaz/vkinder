@@ -16,27 +16,15 @@ session = Session()
 connection = engine.connect()
 
 
-#Собирает инфо о пользователе для поиска пары
-# def search_info(user_id):
-#   all_info = []
-#   vk_ = vk_api.VkApi(token=user_token)
-#   response = vk_.method(
-#     'users_get', {
-#     'user_ids': user_id,
-#     'fields': 'city, sex, bdate'
-#   })
-#   for element in response['items']:
-#     info = [element[city], element[sex], element[bdate]]
-#     all_info.append(info)
-#   return all_info
 
 
 # Ищет людей
 def search_users(sex, age_at, age_to, city):
   all_persons = []
   link_profile = 'https://vk.com/id'
+
   vk_ = vk_api.VkApi(token=user_token)
-  response = vk_.method(
+  res = vk_.method(
       'users.search', {
       'sort': 1,
       'sex': sex,
@@ -48,12 +36,12 @@ def search_users(sex, age_at, age_to, city):
       'online': 0,
       'hometown': city
      })
-  for element in response['items']:
-    person = [
-      element['first_name'], element['last_name'],
-      link_profile + str(element['id']), element['id']
-    ]
-    all_persons.append(person)
+  for element in res['items']:
+      person = [
+        element['first_name'], element['last_name'],
+        link_profile + str(element['id']), element['id']
+      ]
+      all_persons.append(person)
   return all_persons
 
 
@@ -67,7 +55,6 @@ def get_photo(user_owner_id):
       'v': v,
       'owner_id': user_owner_id,
       'album_id': 'profile',
-      'count': 10,
       'extended': 1,
       'photo_sizes': 1,
       })

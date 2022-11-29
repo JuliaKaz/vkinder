@@ -16,8 +16,6 @@ session = Session()
 connection = engine.connect()
 
 
-
-
 # Ищет людей
 def search_users(sex, age_at, age_to, city):
   all_persons = []
@@ -36,13 +34,17 @@ def search_users(sex, age_at, age_to, city):
       'online': 0,
       'hometown': city
      })
-  for element in res['items']:
+  try:
+    for element in res['items']:
       person = [
         element['first_name'], element['last_name'],
         link_profile + str(element['id']), element['id']
       ]
       all_persons.append(person)
-  return all_persons
+    return all_persons
+  except Exception:
+      write_msg(user_id, 'Что-то пошло не так.'
+                         '\nVkinder - для активации бота.')
 
 
 # Находит фото
@@ -76,10 +78,14 @@ def get_photo(user_owner_id):
 # Сортирует фото по лайкам, удаляет
 def sort_likes(photos):
   result = []
-  for element in photos:
-    if element != ['нет фото.'] and photos != 'нет доступа к фото':
-      result.append(element)
-  return sorted(result)
+  try:
+    for element in photos:
+        if element != ['нет фото.'] and photos != 'нет доступа к фото':
+        result.append(element)
+    return sorted(result)
+  except Exception:
+      write_msg(user_id, 'Что-то пошло не так.'
+                         '\nVkinder - для активации бота.')
 
 
 # json
@@ -100,4 +106,4 @@ def json_create(lst):
     json.dump(res_list, write_file, ensure_ascii=False)
 
   print(f'Информация о загруженных файлах успешно записана в json файл.')
-  
+

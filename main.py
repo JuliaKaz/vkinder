@@ -137,13 +137,13 @@ def search_info(user_id):
     msg_text, user_id = loop_bot()
     sex = msg_text[0:1]
 
-  if 'city' not in json_res:
-    write_msg(user_id,'Введите город')
-
+  if 'city' in json_res['response'][0]:
+    city = json_res['response'][0]['city']['title']
+    
+  else:
+    write_msg(user_id, 'Введите город')
     msg_text, user_id = loop_bot()
     city = msg_text[0:len(msg_text)].lower()
-  else:
-    city = json_res['response'][0]['city']
 
   return sex, age_to, age_at, city
 

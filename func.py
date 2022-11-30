@@ -6,6 +6,7 @@ from config import group_token, user_token, v
 from vk_api.exceptions import ApiError
 from db import engine, Base, Session, User, DatingUser, Photos, BlackList
 from sqlalchemy.exc import IntegrityError, InvalidRequestError
+import requests
 
 
 # Для работы с вк_апи
@@ -20,7 +21,6 @@ connection = engine.connect()
 def search_users(sex, age_at, age_to, city):
   all_persons = []
   link_profile = 'https://vk.com/id'
-
   vk_ = vk_api.VkApi(token=user_token)
   res = vk_.method(
       'users.search', {
@@ -78,14 +78,10 @@ def get_photo(user_owner_id):
 # Сортирует фото по лайкам, удаляет
 def sort_likes(photos):
   result = []
-  try:
-    for element in photos:
-        if element != ['нет фото.'] and photos != 'нет доступа к фото':
-        result.append(element)
-    return sorted(result)
-  except Exception:
-      write_msg(user_id, 'Что-то пошло не так.'
-                         '\nVkinder - для активации бота.')
+  for element in photos:
+    if element != ['нет фото.'] and photos != 'нет доступа к фото':
+            result.append(element)
+  return sorted(result)
 
 
 # json

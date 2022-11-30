@@ -11,6 +11,8 @@ from datetime import datetime
 # Для работы с вк_апи
 vk = vk_api.VkApi(token=group_token)
 longpoll = VkLongPoll(vk)
+
+
 # Для работы с БД
 session = Session()
 connection = engine.connect()
@@ -45,13 +47,9 @@ def show_info():
 
 
 def reg_new_user(id_num):
-
-    write_msg(id_num, 'Вы прошли регистрацию.')
-    write_msg(id_num, 'Vkinder - для активации бота\n')
-
-    register_user(id_num)
-
-
+  write_msg(id_num, 'Вы прошли регистрацию.')
+  write_msg(id_num, 'Vkinder - для активации бота\n')
+  register_user(id_num)
 
 
 def go_to_favorites(ids):
@@ -112,14 +110,12 @@ def go_to_blacklist(ids):
 
 
 # Собирает инфо о пользователе для поиска пары
-def search_info(user_id):
-
+def get_info(user_id):
   url = 'https://api.vk.com/method/users.get'
   params = {'user_ids': user_id, 'fields': 'bdate,sex,city',
             'access_token': user_token,
             'v': '5.131'}
   res = requests.get(url, params=params)
-
   json_res = res.json()
   try:
     if 'bdate' in json_res['response'][0].keys() and \
@@ -135,7 +131,6 @@ def search_info(user_id):
       write_msg(user_id, 'Возраст до:')
       msg_text, user_id = loop_bot()
       age_at = msg_text[0:1]
-  # print(json_res)
 
     sex_user = json_res['response'][0]['sex']
     if sex_user == 1:
@@ -156,15 +151,15 @@ def search_info(user_id):
       msg_text, user_id = loop_bot()
       city = msg_text[0:len(msg_text)].lower()
 
-
-
     return sex, age_to, age_at, city
   except KeyError:
     write_msg(user_id, 'Ошибка получения токена.')
 
+
 def input_error():
   write_msg(user_id, 'Не понимаю вас.'
             '\nVkinder - для активации бота.')
+
 
 if __name__ == '__main__':
   while True:
@@ -178,35 +173,15 @@ if __name__ == '__main__':
       if msg_text.lower() == 'да':
         current_user_id = check_db_master(user_id)
         if current_user_id:
-          write_msg(user_id, 'уже зареган пиши вкиндер')
+          write_msg(user_id, 'Вы уже зарегистрированы.'
+                             '\nVkinder - для активации бота.')
         else:
           reg_new_user(user_id)
 
-
-
-
-
-      # Ищет партнера
-      # elif len(msg_text) > 1:
-      #   sex = 0
+      # Ищет
       elif msg_text[0:3].lower() == 'ищи':
         try:
-          sex, age_to, age_at, city = search_info(user_id)
-
-        # if msg_text[0:7].lower() == 'девушка':
-        #   sex = 1
-        # elif msg_text[0:7].lower() == 'мужчина':
-        #   sex = 2
-        # age_at = msg_text[8:10]
-        # if int(age_at) < 18:
-        #   write_msg(user_id, 'Выставлен минимальный возраст - 18 лет.')
-        #   age_at = 18
-        # age_to = msg_text[11:14]
-        # if int(age_to) >= 100:
-        #   write_msg(user_id, 'Выставлено максимальное значение - 99 лет.')
-        #   age_to = 99
-        # city = msg_text[14:len(msg_text)].lower()
-
+          sex, age_to, age_at, city = get_info(user_id)
           # Ищет анкеты
           result = search_users(sex, int(age_at), int(age_to), city)
           json_create(result)
@@ -299,6 +274,4 @@ if __name__ == '__main__':
     elif len(msg_text) > 0:
       write_msg(user_id, f'Здравствуйте! '
                          f'\nВведите Vkinder для активации бота.')
-
-
 

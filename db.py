@@ -9,10 +9,12 @@ from sqlalchemy.exc import IntegrityError, InvalidRequestError
 from sqlalchemy_utils import database_exists, create_database
 from config import group_token
 
+
 # Для работы с вк_апи
 vk = vk_api.VkApi(token=group_token)
 longpoll = VkLongPoll(vk)
 
+#База
 Base = declarative_base()
 engine = sq.create_engine('postgresql://postgres:VJK-1824-skn@localhost:5432/vkbot_jul',
                           client_encoding='utf8')
@@ -82,10 +84,10 @@ def write_msg(user_id, message, attachment=None):
 
 # Регистрация пользователя
 def register_user(vk_id):
-  new_user = User(vk_id=vk_id)
-  session.add(new_user)
-  session.commit()
-  return True
+    new_user = User(vk_id=vk_id)
+    session.add(new_user)
+    session.commit()
+    return True
 
 
 # Удаляет пользователя из черного списка
@@ -190,4 +192,3 @@ def add_to_black_list(event_id, vk_id, first_name, second_name, city, link,
 
 if __name__ == '__main__':
     Base.metadata.create_all(engine)
-    

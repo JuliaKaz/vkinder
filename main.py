@@ -41,13 +41,17 @@ def show_info():
     f'Перейти в избранное - 2'
     f'Перейти в черный список - 0'
     f'Поиск - ищи'
-    f'Меню бота - vkinder')
+    f'Меню бота - Vkinder')
 
 
 def reg_new_user(id_num):
-  write_msg(id_num, 'Вы прошли регистрацию.')
-  write_msg(id_num, f'vkinder - для активации бота\n')
-  register_user(id_num)
+
+    write_msg(id_num, 'Вы прошли регистрацию.')
+    write_msg(id_num, 'Vkinder - для активации бота\n')
+
+    register_user(id_num)
+
+
 
 
 def go_to_favorites(ids):
@@ -69,9 +73,12 @@ def go_to_favorites(ids):
       if nums >= len(alls_users) - 1:
         write_msg(
           user_ids, f'Это последняя анкета.\n'
-          f'vkinder - вернуться в меню\n')
+          f'Vkinder - вернуться в меню\n')
     elif msg_texts.lower() == 'q':
-      write_msg(ids, 'vkinder - для активации бота.')
+      write_msg(ids, 'Vkinder - для активации бота.')
+      break
+    else:
+      input_error()
       break
 
 
@@ -95,9 +102,12 @@ def go_to_blacklist(ids):
       if num >= len(all_users) - 1:
         write_msg(
           user_ids, f'Это последняя анкета.\n'
-          f'vkinder - вернуться в меню\n')
+          f'Vkinder - вернуться в меню\n')
     elif msg_texts.lower() == 'q':
       write_msg(ids, 'Vkinder - для активации бота.')
+      break
+    else:
+      input_error()
       break
 
 
@@ -146,11 +156,15 @@ def search_info(user_id):
       msg_text, user_id = loop_bot()
       city = msg_text[0:len(msg_text)].lower()
 
+
+
     return sex, age_to, age_at, city
   except KeyError:
-    write_msg(user_id, 'Ошибка получения токена')
+    write_msg(user_id, 'Ошибка получения токена.')
 
-
+def input_error():
+  write_msg(user_id, 'Не понимаю вас.'
+            '\nVkinder - для активации бота.')
 
 if __name__ == '__main__':
   while True:
@@ -162,7 +176,16 @@ if __name__ == '__main__':
 
       # Регистрирует пользователя в БД
       if msg_text.lower() == 'да':
-        reg_new_user(user_id)
+        current_user_id = check_db_master(user_id)
+        if current_user_id:
+          write_msg(user_id, 'уже зареган пиши вкиндер')
+        else:
+          reg_new_user(user_id)
+
+
+
+
+
       # Ищет партнера
       # elif len(msg_text) > 1:
       #   sex = 0
@@ -183,8 +206,8 @@ if __name__ == '__main__':
         #   write_msg(user_id, 'Выставлено максимальное значение - 99 лет.')
         #   age_to = 99
         # city = msg_text[14:len(msg_text)].lower()
-        # Ищем анкеты
 
+          # Ищет анкеты
           result = search_users(sex, int(age_at), int(age_to), city)
           json_create(result)
           current_user_id = check_db_master(user_id)
@@ -255,8 +278,11 @@ if __name__ == '__main__':
             elif msg_text.lower() == 'q':
               write_msg(user_id, 'До встречи.')
               break
+            else:
+              input_error()
+              break
         except Exception:
-          write_msg(user_id, 'Что-то пошло не так'
+          write_msg(user_id, 'Что-то пошло не так.'
                     '\nVkinder - для активации бота.')
 
       # Переходит в избранное
@@ -267,8 +293,12 @@ if __name__ == '__main__':
       elif msg_text == '0':
         go_to_blacklist(user_id)
 
+      else:
+        input_error()
+
     elif len(msg_text) > 0:
       write_msg(user_id, f'Здравствуйте! '
                          f'\nВведите Vkinder для активации бота.')
+
 
 

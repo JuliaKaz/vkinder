@@ -114,7 +114,7 @@ def get_info(user_id):
   url = 'https://api.vk.com/method/users.get'
   params = {'user_ids': user_id, 'fields': 'bdate,sex,city',
             'access_token': user_token,
-            'v': '5.131'}
+            'v': v}
   res = requests.get(url, params=params)
   json_res = res.json()
   try:

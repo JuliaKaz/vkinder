@@ -16,7 +16,7 @@ longpoll = VkLongPoll(vk)
 
 #База
 Base = declarative_base()
-engine = sq.create_engine('postgresql://postgres:VJK-1824-skn@localhost:5432/vkbot_jul',
+engine = sq.create_engine('postgresql://postgres:(пароль)@localhost:5432/vkbot_jul',
                           client_encoding='utf8')
 
 if not database_exists(engine.url):
